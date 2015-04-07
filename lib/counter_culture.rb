@@ -122,6 +122,8 @@ module CounterCulture
 
           # iterate over all the possible counter cache column names
           column_names.each do |where, column_name|
+            where = where.map { |elm| elm.class == Proc ? elm.call : elm }
+
             # select join column and count (from above) as well as cache column ('column_name') for later comparison
             counts_query = query.select("#{klass.table_name}.#{klass.primary_key}, #{klass.table_name}.#{relation_reflect(hash[:relation]).association_primary_key}, #{count_select} AS count, #{klass.table_name}.#{column_name}")
 
